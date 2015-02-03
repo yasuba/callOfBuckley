@@ -92,6 +92,10 @@ module.exports = function(grunt) {
             sass: {
                 files: ['<%= config.app %>/styles/**/*.{scss,sass}'],
                 tasks: ['sass:dev']
+            },
+            browserify: {
+                files: ['<%= config.app %>/scripts/*.js'],
+                tasks: ['browserify:dev']
             }
         }
 

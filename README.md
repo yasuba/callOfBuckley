@@ -29,3 +29,5 @@ Simple frontend boilerplate that includes Grunt tasks, Bower packages, Node stru
 `bower install`
 
 `grunt serve`
+
+credits: [mo-lon](https://github.com/mo-lon)

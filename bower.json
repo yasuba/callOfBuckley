@@ -1,0 +1,19 @@
+{
+  "name": "2-canyoubuyit",
+  "version": "0.0.0",
+  "authors": [
+    "mserino <m.serino@hotmail.it>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "~3.3.3",
+    "jquery": "~2.1.3"
+  }
+}

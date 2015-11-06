@@ -16,7 +16,8 @@ $(document).ready(function(){
 			location: {
 				lat: lat,
 				long: long
-			}
+			},
+			close: 'false'
 		});
 		$('#playerName').val('');
 	});
@@ -30,14 +31,7 @@ db.on('child_added', function(snapshot) {
 
 	$('#target').prepend(html);
 	playerCount();
-	// console.log(snapshot.val().location.lat + ', ' + snapshot.val().location.long);
 });
-
-function getPlayer(name) {
-	db.once('value', function(snapshot) {
-		var players = snapshot;
-	});
-}
 
 function playerCount() {
 	db.once('value', function(snapshot) {
@@ -50,17 +44,22 @@ db.on('value', function(snapshot) {
 	snapshot.forEach(function(childSnapshot) {
 		var player = {};
 		var childData = childSnapshot.val();
-		console.log('childData ' + childData.location.lat);
 		player.name = childData.player;
 		player.location = [childData.location.lat, childData.location.long];
 		all.push(player);
 	});
-	console.log(all);
+
 	var lat1 = parseFloat(all[0].location[0]);
 	var lat2 = parseFloat(all[1].location[0]);
 	var long1 = parseFloat(all[0].location[1]);
 	var long2 = parseFloat(all[1].location[1]);
-	console.log('distance is: ' + calculateDistance(lat1, long1, lat2, long2));
+
+	if (calculateDistance(lat1, long1, lat2, long2) < 1) {
+		for (var key in snapshot.val()) {
+			var player = new Firebase('https://intense-inferno-3591.firebaseio.com/' + key);
+			player.update({close: "true"})
+		}
+	}
 });
 
 function calculateDistance(lat1, lon1, lat2, lon2) {

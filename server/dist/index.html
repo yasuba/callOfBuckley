@@ -16,7 +16,6 @@
 </form>
 
 <div id="target">
-  
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -24,10 +23,10 @@
 <script src="/scripts/main.js"></script>
 
 <script id="entry-template" type="text/x-handlebars-template">
-  <div class="entry">
+  <div class="entry" id="{{player}}">
     <h1>{{player}}</h1>
     <div class="lat">
-      Lat: {{location.lat}}
+      Lat: <span class="{{player}}-lat">{{location.lat}}</span>
     </div>
     <div class="long">
       Long: {{location.long}}

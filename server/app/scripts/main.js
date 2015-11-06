@@ -3,6 +3,8 @@ var db = new Firebase('https://intense-inferno-3591.firebaseio.com/');
 var Player = require('./player.js');
 var Handlebars = require('handlebars');
 
+var players = [];
+
 $(document).ready(function(){
 	$('#playerForm').on('submit', function(e) {
 		e.preventDefault();
@@ -18,8 +20,6 @@ $(document).ready(function(){
 		});
 		$('#playerName').val('');
 	});
-	getPlayerLocation('Maya');
-
 });
 
 db.on('child_added', function(snapshot) {
@@ -27,30 +27,41 @@ db.on('child_added', function(snapshot) {
 	var source = $('#entry-template').html();
 	var template = Handlebars.compile(source);
 	var html    = template(message);
+
 	$('#target').prepend(html);
 	playerCount();
+	// console.log(snapshot.val().location.lat + ', ' + snapshot.val().location.long);
 });
+
+function getPlayer(name) {
+	db.once('value', function(snapshot) {
+		var players = snapshot;
+	});
+}
 
 function playerCount() {
 	db.once('value', function(snapshot) {
 		var count = snapshot.numChildren();
-		$('.js-player-count').text('count: ' + count);
 	});
 }
 
-function getPlayer(name) {
-	var player = "s";
-	db.orderByChild('player').equalTo(name).on('child_added', function(snapshot) {
-		var player = "hello";
+db.on('value', function(snapshot) {
+	var all = [];
+	snapshot.forEach(function(childSnapshot) {
+		var player = {};
+		var childData = childSnapshot.val();
+		console.log('childData ' + childData.location.lat);
+		player.name = childData.player;
+		player.location = [childData.location.lat, childData.location.long];
+		all.push(player);
 	});
-	console.log(player);
-	return player;
-}
-
-function getPlayerLocation(name) {
-	var location = getPlayer("Maya");
-	console.log(getPlayer("Maya"));
-}
+	console.log(all);
+	var lat1 = parseFloat(all[0].location[0]);
+	var lat2 = parseFloat(all[1].location[0]);
+	var long1 = parseFloat(all[0].location[1]);
+	var long2 = parseFloat(all[1].location[1]);
+	console.log('distance is: ' + calculateDistance(lat1, long1, lat2, long2));
+});
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
   var p = 0.017453292519943295;    // Math.PI / 180

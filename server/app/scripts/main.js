@@ -8,14 +8,13 @@ $(document).ready(function(){
 		e.preventDefault();
 		var name = $('#playerName').val();
 		db.push({
+			player: name,
 			location: {
 				lat: "12345",
 				long: "67890"
-			},
-			name: name
+			}
 		});
 		$('#playerName').val('');
-		console.log('blah');
 	});
 });
 
@@ -25,4 +24,12 @@ db.on('child_added', function(snapshot) {
 	var template = Handlebars.compile(source);
 	var html    = template(message);
 	$('#target').append(html);
+	playerCount();
 });
+
+function playerCount() {
+	db.once('value', function(snapshot) {
+		var count = snapshot.numChildren();
+		$('.js-player-count').text('count: ' + count);
+	});
+}

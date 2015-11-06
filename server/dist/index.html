@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<h2>Number of players: <span class="js-player-count"></h2>
+
 <form id="playerForm">
 	<input id="playerName" type="text" placeholder="Enter your name"/>
 	<button id="playerSubmit">Submit</button>
@@ -19,7 +21,7 @@
 
 <script id="entry-template" type="text/x-handlebars-template">
   <div class="entry">
-    <h1>{{name}}</h1>
+    <h1>{{player}}</h1>
     <div class="lat">
       Lat: {{location.lat}}
     </div>

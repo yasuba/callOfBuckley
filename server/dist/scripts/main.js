@@ -16,6 +16,7 @@ $(document).ready(function(){
 			name: name
 		});
 		$('#playerName').val('');
+		console.log('blah');
 	});
 });
 

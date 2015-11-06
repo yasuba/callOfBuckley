@@ -98,7 +98,6 @@ module.exports = function(grunt) {
                 tasks: ['browserify:dev']
             }
         }
-
     });
 
     grunt.registerTask('serve', function(target) {
@@ -107,7 +106,7 @@ module.exports = function(grunt) {
             'browserify:dev',
             'concurrent:server',
             'browserSync',
-            'watch'
+            'watch',
         ]);
     });
 

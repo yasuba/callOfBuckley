@@ -6,14 +6,28 @@
 </head>
 <body>
 
-<h1>Header h1</h1>
-<h2>Header h2</h2>
-<h3>Header h3</h3>
-<p>paragraph</p>
-<p class="js-clickMe well">Click to check for jquery <span class="js-clicked"></span></p>
+<form id="playerForm">
+	<input id="playerName" type="text" placeholder="Enter your name"/>
+	<button id="playerSubmit">Submit</button>
+</form>
+
+<div id="target"></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
 <script src="/scripts/main.js"></script>
+
+<script id="entry-template" type="text/x-handlebars-template">
+  <div class="entry">
+    <h1>{{name}}</h1>
+    <div class="lat">
+      Lat: {{location.lat}}
+    </div>
+    <div class="long">
+      Long: {{location.long}}
+    </div>
+  </div>
+</script>
+
 </body>
 </html>

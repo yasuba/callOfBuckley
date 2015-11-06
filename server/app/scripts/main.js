@@ -7,11 +7,13 @@ $(document).ready(function(){
 	$('#playerForm').on('submit', function(e) {
 		e.preventDefault();
 		var name = $('#playerName').val();
+		var lat = $('#lat').val();
+		var long = $('#long').val();
 		db.push({
 			player: name,
 			location: {
-				lat: "12345",
-				long: "67890"
+				lat: lat,
+				long: long
 			}
 		});
 		$('#playerName').val('');
@@ -23,7 +25,7 @@ db.on('child_added', function(snapshot) {
 	var source = $('#entry-template').html();
 	var template = Handlebars.compile(source);
 	var html    = template(message);
-	$('#target').append(html);
+	$('#target').prepend(html);
 	playerCount();
 });
 

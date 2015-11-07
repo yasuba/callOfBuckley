@@ -6,14 +6,14 @@
 </head>
 <body>
 
-<h2>Number of players: <span class="js-player-count"></h2>
+<h1>Call Of Buckley</h1>
 
-<form id="playerForm">
+<!-- <form id="playerForm">
 	<input id="playerName" type="text" placeholder="Enter your name"/>
   <input id="lat" type="text" placeholder="lat" />
   <input id="long" type="text" placeholder="long" />
   <button id="playerSubmit">Submit</button>
-</form>
+</form> -->
 
 <div id="target">
 </div>
@@ -24,13 +24,14 @@
 
 <script id="entry-template" type="text/x-handlebars-template">
   <div class="entry" id="{{player}}">
-    <h1>{{player}}</h1>
+    <h2>{{player}}</h2>
     <div class="lat">
-      Lat: <span class="{{player}}-lat">{{location.lat}}</span>
+      Lat: <span class="{{player}}-lat">{{location.l}}</span>
     </div>
     <div class="long">
-      Long: {{location.long}}
+      Long: {{location.l}}
     </div>
+    Close: {{close}}
   </div>
 </script>
 

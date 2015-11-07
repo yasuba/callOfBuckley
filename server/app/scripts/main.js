@@ -1,29 +1,14 @@
 var Firebase = require('firebase');
-var db = new Firebase('https://intense-inferno-3591.firebaseio.com/');
+var db = new Firebase('https://blazing-heat-4042.firebaseio.com/callOfBuckley');
 var Player = require('./player.js');
 var Handlebars = require('handlebars');
 
-var players = [];
-
-$(document).ready(function(){
-	$('#playerForm').on('submit', function(e) {
-		e.preventDefault();
-		var name = $('#playerName').val();
-		var lat = $('#lat').val();
-		var long = $('#long').val();
-		db.push({
-			player: name,
-			location: {
-				lat: lat,
-				long: long
-			},
-			close: 'false'
-		});
-		$('#playerName').val('');
-	});
-});
 
 db.on('child_added', function(snapshot) {
+	updatehandlebars(snapshot);
+});
+
+function updatehandlebars(snapshot) {
 	var message = snapshot.val();
 	var source = $('#entry-template').html();
 	var template = Handlebars.compile(source);
@@ -31,21 +16,48 @@ db.on('child_added', function(snapshot) {
 
 	$('#target').prepend(html);
 	playerCount();
-});
+}
 
 function playerCount() {
 	db.once('value', function(snapshot) {
 		var count = snapshot.numChildren();
+		checkDistance(snapshot);
 	});
 }
 
-db.on('value', function(snapshot) {
+function isObject(obj) {
+  return obj === Object(obj);
+}
+
+db.on('child_changed', function(snapshot) {
+	var all = [];
+	var player = {};
+	player.name = snapshot.val().player;
+	player.lat = parseFloat(snapshot.val().location.l['0']);
+	player.long = parseFloat(snapshot.val().location.l['1']);
+	all.push(player);
+
+	// here possibly we need something that checks there is more than one player before calling calculateDistance and if there are then iterate through each player checking distances from each other
+	
+	var lat1 = 51.5503051; //hardcoding player 2's coordinates as I have no phone friends :(
+	var long1 = -0.0632027;
+
+	if (calculateDistance(player.lat, player.long, lat1, long1) < 1) {
+		var player = new Firebase('https://blazing-heat-4042.firebaseio.com/callOfBuckley/' + snapshot.key());
+		player.update({close: "true"});
+	} else {
+		console.log('no dice');
+	}
+	updatehandlebars(snapshot);
+});
+
+function checkDistance(snapshot) {
 	var all = [];
 	snapshot.forEach(function(childSnapshot) {
 		var player = {};
 		var childData = childSnapshot.val();
 		player.name = childData.player;
-		player.location = [childData.location.lat, childData.location.long];
+		player.location = childData.location.l;
 		all.push(player);
 	});
 
@@ -55,12 +67,13 @@ db.on('value', function(snapshot) {
 	var long2 = parseFloat(all[1].location[1]);
 
 	if (calculateDistance(lat1, long1, lat2, long2) < 1) {
-		for (var key in snapshot.val()) {
-			var player = new Firebase('https://intense-inferno-3591.firebaseio.com/' + key);
-			player.update({close: "true"})
-		}
+		var player = new Firebase('https://blazing-heat-4042.firebaseio.com/callOfBuckley/' + snapshot.key());
+		player.update({close: "true"})
+		console.log(key);
+	} else {
+		console.log('nope');
 	}
-});
+}
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
   var p = 0.017453292519943295;    // Math.PI / 180

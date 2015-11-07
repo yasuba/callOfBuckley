@@ -25,10 +25,6 @@ function playerCount() {
 	});
 }
 
-function isObject(obj) {
-  return obj === Object(obj);
-}
-
 db.on('child_changed', function(snapshot) {
 	var all = [];
 	var player = {};
